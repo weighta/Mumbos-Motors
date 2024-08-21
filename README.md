@@ -55,3 +55,6 @@ stuff i did back in 2015-19
 ![](https://i.imgur.com/Jq1erXK.png)
 ![](https://i.imgur.com/16Bgmrw.jpg)
 ![](https://i.imgur.com/sDjG0iA.jpg)
+![](https://i.imgur.com/CN6S8Qi.png)
+![](https://i.imgur.com/U2jxEBV.png)
+![](https://i.imgur.com/aEoLTNR.png)
