@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
+using System.Diagnostics;
+using System.Data.Common;
+using System.Threading;
 
 namespace Mumbos_Motors
 {
@@ -32,7 +35,7 @@ namespace Mumbos_Motors
 
 
 
-        public FilePage(string dir)
+        public FilePage(string dir, Form1 Form)
         {
             fileName = Path.GetFileName(dir);
 
@@ -73,6 +76,58 @@ namespace Mumbos_Motors
                         //spawn tabcontrol in filepage
                         TabPage_mainpage.Controls.Add(tabControl);
                         break;
+                    }
+
+                case 267719405: //XB COMPRESSED FILE
+                    {
+                        string xboxPath = Environment.ExpandEnvironmentVariables("%XEDK%");
+                        if (xboxPath == "%XEDK%")
+                        {
+                            error = true; ;
+                            //MessageBox.Show("Error, You need to ether install the XBOX 360 SDK or Run in administrator.");
+                            if (MessageBox.Show("You need to install the XBOX 360 SDK and restart windows. Would you like to install the SDK?", "SDK ERROR", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
+                            {
+                                System.Diagnostics.Process.Start("https://www.mediafire.com/file/l9786i9endh5w5e/XBOX360+SDK+21256.3.exe");
+                            }
+                            
+                            caff = new CAFF(dir);
+                            break;
+                        }
+                        else
+                        {
+                            error = true; ;
+                            string fullPath = xboxPath + "\\bin\\win32\\xbdecompress.exe";
+
+                            // "/C " will terminate the window after running the command and "/K " will keep the window open
+                            string cmdCommand = "\"" + fullPath + "\" \"" + dir + "\" \"" + dir + "_decompressed\"";
+                            Clipboard.SetText(cmdCommand);
+
+                            //System.Diagnostics.Process.Start("CMD.exe", cmdCommand);
+
+                            Process p = new Process();
+                            p.StartInfo.FileName = fullPath;
+                            p.StartInfo.Arguments = "\"" + dir + "\" \"" + dir + "_decompressed\"";
+                            
+                            p.Start();
+
+                            while (!p.HasExited)
+                            {
+                                
+                            }
+
+                            error = true; ;
+                            dir += "_decompressed";
+                            //FilePage(dir);
+                            //caff = new CAFF(dir);
+                            Form.ForceLoadFile(dir);
+                            caff = new CAFF(dir);
+                            break;
+                        }
+                        error = true; ;
+                        MessageBox.Show("Could not find xbdecompress at: " + xboxPath);
+                        caff = new CAFF(dir);
+                        break;
+
                     }
                 default:
                     {
