@@ -25,6 +25,11 @@ namespace Mumbos_Motors
             createStartPage();
         }
 
+        public void ForceLoadFile(string filename)
+        {
+            addTab_Main_File(filename);
+        }
+
         private void Form1_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -77,7 +82,7 @@ namespace Mumbos_Motors
         /// <param name="dir"></param>
         private void addTab_Main_File(string dir)
         {
-            FilePage filePage = new FilePage(dir);
+            FilePage filePage = new FilePage(dir,this);
             toolBars.Add(filePage);
 
 
