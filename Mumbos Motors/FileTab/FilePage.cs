@@ -9,6 +9,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Data.Common;
 using System.Threading;
+using Mumbos_Motors.FileTab;
 
 namespace Mumbos_Motors
 {
@@ -29,6 +30,7 @@ namespace Mumbos_Motors
 
         //Page1
         private FileTab.FileInfoPage fileInfoPage;
+        
 
         //Page2
         private FileTab.TagsCAFF tagsPage;
@@ -52,7 +54,7 @@ namespace Mumbos_Motors
                         tabControl.Width = 1063;
                         tabControl.Height = 605;
 
-                        tabControl.TabPages.Add(new FileTab.FileInfo.InfoCAFF(dir, caff).tabPage);
+                        tabControl.TabPages.Add(new FileTab.FileInfo.InfoCAFF(dir, caff, Form).tabPage);
                         tabControl.TabPages.Add(new FileTab.TagsCAFF(caff).tabPage);
 
                         //spawn tabcontrol in filepage
@@ -70,7 +72,7 @@ namespace Mumbos_Motors
                         tabControl.Width = 1063;
                         tabControl.Height = 605;
 
-                        tabControl.TabPages.Add(new FileTab.FileInfo.InfoMULTICAFF(dir, multiCAFF).tabPage);
+                        tabControl.TabPages.Add(new FileTab.FileInfo.InfoMULTICAFF(dir, multiCAFF, Form).tabPage);
                         tabControl.TabPages.Add(new FileTab.TagsInfo.TagsMULTICAFF(multiCAFF).tabPage);
 
                         //spawn tabcontrol in filepage
@@ -100,13 +102,13 @@ namespace Mumbos_Motors
                             error = true; ;
                             string fullPath = xboxPath + "\\bin\\win32\\xbdecompress.exe";
 
-                            string cmdCommand = "\"" + fullPath + "\" \"" + dir + "\" \"" + dir + "_decompressed\"";
-                            //Clipboard.SetText(cmdCommand); //Copys the command to the clipboard for debugging.
-
                             //Starts up xbdecompress and feeds it the dir and the output as dir_decompressed
                             Process p = new Process();
                             p.StartInfo.FileName = fullPath;
-                            p.StartInfo.Arguments = "\"" + dir + "\" \"" + dir + "_decompressed\"";
+                            string oldDir = dir;
+                            string newDir = dir.Replace("_recompressed", "");
+
+                            p.StartInfo.Arguments = "/C \"" + oldDir + "\" \"" + newDir + "_decompressed\"";
                             p.Start();
 
                             /*
@@ -122,12 +124,12 @@ namespace Mumbos_Motors
                             caff = new CAFF(dir);
 
                             //Set the new Dir to the decompressed file
-                            dir += "_decompressed";
+                            newDir += "_decompressed";
 
                             //If the file Exist aka if xbdecompress.exe did its job, then we load up the file.
-                            if (File.Exists(dir))
+                            if (File.Exists(newDir))
                             {
-                                Form.ForceLoadFile(dir);
+                                Form.ForceLoadFile(newDir);
                             }
 
                              break;
