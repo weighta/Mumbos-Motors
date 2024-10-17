@@ -34,7 +34,7 @@ namespace Mumbos_Motors
         private FileTab.TagsCAFF tagsPage;
 
 
-
+        //Added a Form1 passthough, I dont know any other way to get the ref ¯\_(ツ)_/¯ -Solar
         public FilePage(string dir, Form1 Form)
         {
             fileName = Path.GetFileName(dir);
@@ -81,10 +81,12 @@ namespace Mumbos_Motors
                 case 267719405: //XB COMPRESSED FILE
                     {
                         string xboxPath = Environment.ExpandEnvironmentVariables("%XEDK%");
+
+                        //Path is not valid, ether path is missing or you need a restart
                         if (xboxPath == "%XEDK%")
                         {
                             error = true; ;
-                            //MessageBox.Show("Error, You need to ether install the XBOX 360 SDK or Run in administrator.");
+
                             if (MessageBox.Show("You need to install the XBOX 360 SDK and restart windows. Would you like to install the SDK?", "SDK ERROR", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
                             {
                                 System.Diagnostics.Process.Start("https://www.mediafire.com/file/l9786i9endh5w5e/XBOX360+SDK+21256.3.exe");
@@ -93,36 +95,45 @@ namespace Mumbos_Motors
                             caff = new CAFF(dir);
                             break;
                         }
-                        else
+                        else //Path is valid in which case we want to decompress the file and force the Form to load it.
                         {
                             error = true; ;
                             string fullPath = xboxPath + "\\bin\\win32\\xbdecompress.exe";
 
-                            // "/C " will terminate the window after running the command and "/K " will keep the window open
                             string cmdCommand = "\"" + fullPath + "\" \"" + dir + "\" \"" + dir + "_decompressed\"";
-                            Clipboard.SetText(cmdCommand);
+                            //Clipboard.SetText(cmdCommand); //Copys the command to the clipboard for debugging.
 
-                            //System.Diagnostics.Process.Start("CMD.exe", cmdCommand);
-
+                            //Starts up xbdecompress and feeds it the dir and the output as dir_decompressed
                             Process p = new Process();
                             p.StartInfo.FileName = fullPath;
                             p.StartInfo.Arguments = "\"" + dir + "\" \"" + dir + "_decompressed\"";
-                            
                             p.Start();
 
+                            /*
+                            We wait until the file has been decompressed, 
+                            Might want to add a failsafe here but from my testing as long as you close the xbdecompress.exe cmd, Mumbo should be fine.. 
+                            */
                             while (!p.HasExited)
                             {
                                 
                             }
 
                             error = true; ;
-                            dir += "_decompressed";
-                            //FilePage(dir);
-                            //caff = new CAFF(dir);
-                            Form.ForceLoadFile(dir);
                             caff = new CAFF(dir);
-                            break;
+
+                            //Set the new Dir to the decompressed file
+                            dir += "_decompressed";
+
+                            //If the file Exist aka if xbdecompress.exe did its job, then we load up the file.
+                            if (File.Exists(dir))
+                            {
+                                Form.ForceLoadFile(dir);
+                            }
+
+                             break;
                         }
+
+                        //Xbox Path was Valid but HUH
                         error = true; ;
                         MessageBox.Show("Could not find xbdecompress at: " + xboxPath);
                         caff = new CAFF(dir);
