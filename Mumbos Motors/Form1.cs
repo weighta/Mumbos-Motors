@@ -136,10 +136,12 @@ namespace Mumbos_Motors
                 Rectangle r = tabControl.GetTabRect(i);
                 //Getting the position of the "x" mark.
                 Rectangle closeButton = new Rectangle(r.Right - 15, r.Top + 4, 9, 7);
-                if (closeButton.Contains(e.Location))
+                if (closeButton.Contains(e.Location) && toolBars.Count >= 1)
                 {
                     this.tabControl.TabPages.RemoveAt(i);
-                    toolBars.Remove(toolBars[i - 1]);
+                    int index = i - 1;
+                    index = Math.Max(index, 0);
+                    toolBars.Remove(toolBars[index]);
                     numFileTabsOpen--;
                     break;
                 }
@@ -148,6 +150,36 @@ namespace Mumbos_Motors
         public static string getTitle()
         {
             return "Mombo's Motars";
+        }
+
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string filePath;
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = "c:\\";
+                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+
+                    ForceLoadFile(filePath);
+
+                    
+                }
+            }
+
+            
         }
     }
 }

@@ -13,10 +13,11 @@ namespace Mumbos_Motors.FileTab.FileInfo
         string dir;
         MULTICAFF multiCAFF;
 
-        public InfoMULTICAFF(string dir, MULTICAFF multiCAFF) : base(dir)
+        public InfoMULTICAFF(string dir, MULTICAFF multiCAFF, Form1 Form) : base(dir)
         {
             this.dir = dir;
             this.multiCAFF = multiCAFF;
+            this.Form = Form;
             Background.BackColor = Color.MediumPurple;
 
             labels();

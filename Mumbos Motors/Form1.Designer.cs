@@ -33,6 +33,7 @@
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vIEWToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.startPageToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,6 +46,7 @@
             this.tabControl.Size = new System.Drawing.Size(1063, 605);
             this.tabControl.TabIndex = 0;
             this.tabControl.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl_Main_DrawItem);
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             this.tabControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl_Main_MouseDown);
             // 
             // menuStrip1
@@ -60,6 +62,8 @@
             // 
             // viewToolStripMenuItem
             // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openFileToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
             this.viewToolStripMenuItem.Text = "FILE";
@@ -79,6 +83,13 @@
             this.startPageToolStripMenuItem1.Size = new System.Drawing.Size(127, 22);
             this.startPageToolStripMenuItem1.Text = "Start Page";
             this.startPageToolStripMenuItem1.Click += new System.EventHandler(this.startPageToolStripMenuItem1_Click);
+            // 
+            // openFileToolStripMenuItem
+            // 
+            this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
+            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openFileToolStripMenuItem.Text = "Open file";
+            this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -106,6 +117,7 @@
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem vIEWToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem startPageToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem openFileToolStripMenuItem;
     }
 }
 

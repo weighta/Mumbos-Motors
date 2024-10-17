@@ -11,10 +11,11 @@ namespace Mumbos_Motors.FileTab.FileInfo
         string dir;
         public CAFF caff;
 
-        public InfoCAFF(string dir, CAFF caff) : base(dir)
+        public InfoCAFF(string dir, CAFF caff, Form1 Form) : base(dir)
         {
             this.dir = dir;
             this.caff = caff;
+            this.Form = Form;
             labels();
         }
         public override void labels()
