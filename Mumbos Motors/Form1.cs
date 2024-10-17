@@ -136,10 +136,12 @@ namespace Mumbos_Motors
                 Rectangle r = tabControl.GetTabRect(i);
                 //Getting the position of the "x" mark.
                 Rectangle closeButton = new Rectangle(r.Right - 15, r.Top + 4, 9, 7);
-                if (closeButton.Contains(e.Location))
+                if (closeButton.Contains(e.Location) && toolBars.Count >= 1)
                 {
                     this.tabControl.TabPages.RemoveAt(i);
-                    toolBars.Remove(toolBars[i - 1]);
+                    int index = i - 1;
+                    index = Math.Max(index, 0);
+                    toolBars.Remove(toolBars[index]);
                     numFileTabsOpen--;
                     break;
                 }
